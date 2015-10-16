@@ -58,8 +58,8 @@ module PayPal
 				# we want to log this, so we know about it, but we also want to return 200, because
 				# if it is paypal sending this, it will send it again and again until it gets a 200
 				# back
-				log_error 'already processed' 
-				halt 200, 'already processed' 
+				log_error 'already processed' if respond_to? :log_error
+				halt 200, 'already processed'
 			else
 				instance_exec(paypal_request, &paypal_block(:save))
 			end
