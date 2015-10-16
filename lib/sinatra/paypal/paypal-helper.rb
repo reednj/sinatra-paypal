@@ -1,3 +1,4 @@
+require 'rest-client'
 
 class PaypalHelper
 	def initialize(use_sandbox)
