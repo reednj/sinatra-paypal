@@ -43,7 +43,7 @@ module PayPal
 		})
 
 		app.post '/payment/validate' do
-			paypal_helper = PaypalHelper.new(AppConfig.paypal.use_sandbox)
+			paypal_helper = PaypalHelper.new(app.settings.paypal.sandbox?)
 			paypal_request = PaypalRequest.new(params)
 			
 			# first we check the request against paypal to make sure it is ok
