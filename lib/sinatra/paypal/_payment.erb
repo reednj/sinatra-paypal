@@ -1,0 +1,25 @@
+
+<form id='paypal-form' action="<%= paypal_form_url %>" method="post" style='display:none'>
+	<input type="hidden" name="cmd" value="_xclick">
+
+	<input type="hidden" name="business" value="<%= settings.paypal.email %>">
+	<input type='hidden' name='custom' value='<%= custom_data.to_json %>'>
+	<input type="hidden" name="return" value="<%= url(settings.paypal.return_url) %>">
+	<input type="hidden" name="notify_url" value="<%= url(settings.paypal.notify_url) %>">
+
+	<% if offer_data.nil? %>
+		<input type="hidden" name="item_number" id='paypal-item-number' value="0">
+		<input type="hidden" name="item_name" id='paypal-item-name' value="0">
+		<input type="hidden" name="amount" id='paypal-amount' value="1.00">
+	<% else %>
+		<input type="hidden" name="item_number" id='paypal-item-number' value="<%= offer_data.offer.item_code %>">
+		<input type="hidden" name="item_name" id='paypal-item-name' value="<%= offer_data.item.name %>">
+		<input type="hidden" name="amount" id='paypal-amount' value="<%= offer_data.offer.amount %>">
+	<% end %>
+
+	<input type="hidden" name="no_shipping" value="1">
+	<input type="hidden" name="no_note" value="1">
+	<input type="hidden" name="currency_code" value="USD">
+	<input type="hidden" name="lc" value="US"> 
+	<input type="hidden" name="bn" value="PP-BuyNowBF">
+</form>
