@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Nathan Reed"]
   spec.email         = ["reednj@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
+  spec.summary       = %q{Easy validation and processing of Paypal IPN payments}
   spec.homepage      = "http://github.com/reednj/sinatra-paypal"
   spec.license       = "MIT"
 

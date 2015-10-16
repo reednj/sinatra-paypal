@@ -81,6 +81,10 @@ class PaypalRequest
 		return @custom_data
 	end
 
+	def data
+		custom_data
+	end
+
 	def status
 		@fields[:payment_status]
 	end
