@@ -25,7 +25,7 @@ module PayPal
 
 			raise 'cannot generate a payment form without settings.paypal.email' if settings.paypal.email.nil?
 
-			erb :_payment, :views => File.join(settings.root, 'lib/sinatra/views'), :locals => {
+			erb :_payment, :views => File.join(File.dirname(__FILE__), '/paypal'), :locals => {
 				:custom_data => data,
 				:offer_data => offer_data
 			}
