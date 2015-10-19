@@ -78,6 +78,15 @@ module PayPal
 		end
 	end
 
+	# Register a payment callback. All callbacks are called
+	# with a single argument of the type +PaypalRequest+ containing all the
+	# data for the notification.
+	#
+	# 	payment :complete do |p|
+	# 		# process the payment here
+	# 		# don't forget to check that the price is correct!
+	# 	end
+	#
 	def payment(name, &block)
 		PAYPAL_BLOCKS[name] = block
 	end
