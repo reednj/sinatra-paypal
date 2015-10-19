@@ -55,13 +55,9 @@ module PayPal
 			
 			# check transaction log to make sure this not a replay attack
 			if instance_exec(paypal_request, &_paypal_block(:repeated?))
-				# we want to log this, so we know about it, but we also want to return 200, because
-				# if it is paypal sending this, it will send it again and again until it gets a 200
-				# back
-				log_error 'already processed' if respond_to? :log_error
+				# we also want to return 200, because if it is paypal sending this, it will send 
+				# it again and again until it gets a 200 back
 				halt 200, 'already processed'
-			else
-				instance_exec(paypal_request, &_paypal_block(:save))
 			end
 
 			instance_exec(paypal_request, &_paypal_block(:validate!))

@@ -10,9 +10,34 @@ require 'sinatra/paypal'
 set :raise_errors, false
 set :show_exceptions, false
 
+# dump the error description - this will make it appear nicely in the 
+# unit test description
 error do
 	e = request.env['sinatra.error']
 	return "#{e.class}: #{e.message}" unless e.nil?
 	return "unknown error"
 end
 
+payment :repeated? do |p|
+	path = '/tmp/test.sinatra-payment.log'
+	data = File.read path
+	id = "#{p.id}\n"
+
+	if data.include? id
+		true
+	else
+		File.append path, "#{p.id}\n"
+		false
+	end
+end
+
+#
+# Extensions to make the the test app simpler
+# 
+class File
+	def self.append(path, data)
+		File.open(path, 'a:UTF-8') do |file| 
+			file.write data 
+		end
+	end
+end

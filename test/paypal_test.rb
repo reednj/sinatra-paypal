@@ -68,17 +68,17 @@ class RedditStreamTest < Test::Unit::TestCase
 	#
 	# Now we start the testing of the payment processing
 	#
-#	def test_payment_rejects_double_processing
-#		data = standard_payment_data
-#
-#		post '/payment/validate', data
-#		assert last_response.ok?, page_error("Payment rejected")
-#		assert !last_response.body.include?('already processed')
-#
-#		post '/payment/validate', data
-#		assert last_response.ok?
-#		assert last_response.body.include?('already processed'), "duplicate payment accepted!"
-#	end
+	def test_payment_rejects_double_processing
+		data = standard_payment_data
+
+		post '/payment/validate', data
+		assert last_response.ok?, page_error("Payment rejected")
+		assert !last_response.body.include?('already processed')
+
+		post '/payment/validate', data
+		assert last_response.ok?
+		assert last_response.body.include?('already processed'), "duplicate payment accepted!"
+	end
 
 	def test_payment_thread_id
 		data = standard_payment_data
