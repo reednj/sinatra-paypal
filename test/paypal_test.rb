@@ -5,7 +5,7 @@ require 'minitest/autorun'
 require 'rack/test'
 require 'test/unit'
 
-require './app'
+require_relative './app'
 
 class RedditStreamTest < Test::Unit::TestCase
 	include Rack::Test::Methods
