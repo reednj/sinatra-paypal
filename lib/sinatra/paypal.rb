@@ -9,7 +9,7 @@ PAYPAL_BLOCKS = {}
 module PayPal
 
 	module Helpers
-		def paypal_block(name)
+		def _paypal_block(name)
 			return Proc.new{} if !PAYPAL_BLOCKS.key? name
 			PAYPAL_BLOCKS[name]
 		end
@@ -54,25 +54,25 @@ module PayPal
 			halt 400, 'no username provided' if paypal_request.username.nil?
 			
 			# check transaction log to make sure this not a replay attack
-			if instance_exec(paypal_request, &paypal_block(:repeated?))
+			if instance_exec(paypal_request, &_paypal_block(:repeated?))
 				# we want to log this, so we know about it, but we also want to return 200, because
 				# if it is paypal sending this, it will send it again and again until it gets a 200
 				# back
 				log_error 'already processed' if respond_to? :log_error
 				halt 200, 'already processed'
 			else
-				instance_exec(paypal_request, &paypal_block(:save))
+				instance_exec(paypal_request, &_paypal_block(:save))
 			end
 
-			instance_exec(paypal_request, &paypal_block(:validate!))
+			instance_exec(paypal_request, &_paypal_block(:validate!))
 			
 			# check that the payment is complete. we still return 200 if not, but
 			# we don't need to do anymore processing (except for marking it as accountable, if it is)
 			if paypal_request.complete?
-				instance_exec(paypal_request, &paypal_block(:complete))
+				instance_exec(paypal_request, &_paypal_block(:complete))
 			end
 
-			instance_exec(paypal_request, &paypal_block(:finish))
+			instance_exec(paypal_request, &_paypal_block(:finish))
 
 			return 200
 		end
