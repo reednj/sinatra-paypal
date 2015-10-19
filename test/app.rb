@@ -31,6 +31,20 @@ payment :repeated? do |p|
 	end
 end
 
+get '/payment/form/empty' do
+	return html_payment_form nil
+end
+
+get '/payment/form' do
+	item = {}
+	item[:code] = params[:item_code]
+	item[:price] = params[:item_price]
+	item[:name] = params[:item_name]
+	item = OpenStruct.new item
+
+	return html_payment_form(item)
+end
+
 #
 # Extensions to make the the test app simpler
 # 

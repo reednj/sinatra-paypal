@@ -18,16 +18,21 @@ module PayPal
 			PaypalHelper.form_url(settings.paypal.sandbox?)
 		end
 
-		def html_payment_form(offer_data, data = nil)
-			data ||= {}
-			data[:username] = session[:reddit_user] if !data.nil? && data[:username].nil?
-			data[:offer_code] = offer_data.code if !offer_data.nil?
+		def html_payment_form(item, data = {})
+			# it is valid to send a nil item through - we might be going to set the fields in
+			# javascript - but if it isn't null then there are certain fields that need to be
+			# set
+			if !item.nil?
+				raise 'item.code required' if !item.respond_to?(:code) || item.code.nil?
+				raise 'item.price required' if !item.respond_to?(:price) || item.price.nil?
+				raise 'item.price must be a number above zero' if item.price.to_f <= 0
+			end
 
 			raise 'cannot generate a payment form without settings.paypal.email' if settings.paypal.email.nil?
 
 			erb :_payment, :views => File.join(File.dirname(__FILE__), '/paypal'), :locals => {
 				:custom_data => data,
-				:offer_data => offer_data
+				:item => item
 			}
 		end
 	end
