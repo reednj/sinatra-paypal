@@ -1,3 +1,4 @@
+require 'json'
 
 class PaypalRequest
 	def initialize(params)
@@ -198,3 +199,11 @@ class PaypalRequest
 		@fields
 	end
 end
+
+# extensions needed for the paypal request to work
+class String
+	def sha1
+		Digest::SHA1.hexdigest self
+	end
+end
+
