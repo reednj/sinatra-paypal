@@ -87,6 +87,8 @@ module PayPal
 	# 	end
 	#
 	def payment(name, &block)
+		valid_names = [:complete, :finish, :validate!, :repeated?]
+		raise "#{name.to_s} is not a valid payment callback" if !valid_names.include? name
 		PAYPAL_BLOCKS[name] = block
 	end
 end

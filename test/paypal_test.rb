@@ -128,6 +128,18 @@ class RedditStreamTest < Test::Unit::TestCase
 		assert last_response.ok?, page_error("Payment not accepted")
 	end
 
+	def test_invalid_callbacks_error
+		ex = false
+		begin
+			app.payment :fake_callback do |p|
+			end
+		rescue => e
+			ex = true
+		end
+
+		assert ex, 'callback did not raise exception'
+	end
+
 end
 
 class Array
