@@ -122,6 +122,10 @@ class RedditStreamTest < Test::Unit::TestCase
 
 		post '/payment/validate', data
 		assert last_response.ok?, page_error("Payment not accepted")
+
+		data[:custom] = '{}'
+		post '/payment/validate', data
+		assert last_response.ok?, page_error("Payment not accepted")
 	end
 
 end

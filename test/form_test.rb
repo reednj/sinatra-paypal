@@ -52,6 +52,7 @@ class RedditStreamTest < Test::Unit::TestCase
 		get '/payment/form/empty'
 		assert last_response.ok?, page_error('could not generate payment form')
 		assert last_response.body.include?(app.paypal.email), 'account email not found in form'
+		assert !last_response.body.include?('"username":'), 'should not include username custom_data by default'
 	end
 
 	def test_form_helper_with_item
@@ -69,7 +70,7 @@ class RedditStreamTest < Test::Unit::TestCase
 		
 		code = 'ITEM-0'
 		desc = 'item description'
-		get '/payment/form', { :item_code => code, :item_price => '5.00', :item_name => desc}
+		get '/payment/form', { :item_code => code, :item_price => '5.00', :item_name => desc }
 		assert last_response.ok?, page_error('could not generate payment form')
 		assert last_response.body.include?(app.paypal.email), 'account email not found in form'
 		assert last_response.body.include?(code), 'item_code not found in form'
