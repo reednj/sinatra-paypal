@@ -96,7 +96,7 @@ class PaypalRequest
 	# Note that this field can be modified by the user before submitting the form, 
 	# so you should verify the contents of it before using it.
 	#
-	# payment.custom_data # => { :username => 'dave' }
+	#    payment.custom_data # => { :username => 'dave' }
 	#
 	def custom_data
 		if @custom_data.nil?
@@ -126,7 +126,7 @@ class PaypalRequest
 	#  - Canceled_Reversal
 	#  - Completed
 	#
-	# 	payment.status # => Pending
+	#     payment.status # => Pending
 	#
 	def status
 		@fields[:payment_status]
