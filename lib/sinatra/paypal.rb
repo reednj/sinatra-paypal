@@ -55,8 +55,6 @@ module PayPal
 			if settings.production?
 				halt 400, 'request could not be validated' if !paypal_helper.ipn_valid? params
 			end
-
-			halt 400, 'no username provided' if paypal_request.username.nil?
 			
 			# check transaction log to make sure this not a replay attack
 			if instance_exec(paypal_request, &_paypal_block(:repeated?))

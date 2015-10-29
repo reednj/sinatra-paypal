@@ -83,6 +83,7 @@ class PaypalRequest
 	# 	payment.username # => reednj
 	#
 	def username
+		return nil if !custom_data?
 		self.custom_data[:username]
 	end
 
@@ -99,7 +100,7 @@ class PaypalRequest
 	#    payment.custom_data # => { :username => 'dave' }
 	#
 	def custom_data
-		if @custom_data.nil?
+		if @custom_data.nil? && !@fields[:custom].nil?
 			if @fields[:custom].strip.start_with? '{'
 				# we could get a json object through, in which case it needs to be parsed...
 				@custom_data = JSON.parse(@fields[:custom], {:symbolize_names => true})
@@ -111,6 +112,10 @@ class PaypalRequest
 		end
 
 		return @custom_data
+	end
+
+	def custom_data?
+		!custom_data.nil?
 	end
 
 	# an alias for +custom_data+

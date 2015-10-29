@@ -99,7 +99,7 @@ class RedditStreamTest < Test::Unit::TestCase
 		}.to_json
 
 		post '/payment/validate', data
-		assert_equal last_response.status, 400
+		assert last_response.ok?, page_error("Payment not accepted")
 	end
 
 	def test_payment_accepted_json_custom_data
@@ -112,7 +112,13 @@ class RedditStreamTest < Test::Unit::TestCase
 
 	def test_payment_accepted
 		data = standard_payment_data
-		username = data[:custom]
+		post '/payment/validate', data
+		assert last_response.ok?, page_error("Payment not accepted")
+	end
+
+	def test_payment_accepted_no_custom_data
+		data = standard_payment_data
+		data[:custom] = nil
 
 		post '/payment/validate', data
 		assert last_response.ok?, page_error("Payment not accepted")
