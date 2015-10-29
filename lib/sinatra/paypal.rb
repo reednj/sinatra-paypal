@@ -53,7 +53,7 @@ module PayPal
 			
 			# first we check the request against paypal to make sure it is ok
 			if settings.production?
-				halt 400, 'request could not be validated' if !paypal_helper.ipn_valid? params
+				halt 500, 'request could not be validated' if !paypal_helper.ipn_valid? params
 			end
 			
 			# check transaction log to make sure this not a replay attack
