@@ -4,6 +4,7 @@ Bundler.require
 
 require 'sinatra'
 require 'sinatra/paypal'
+require 'fileutils'
 
 # this allows us to handle errors in test without the default page
 # getting generated (which isn't very useful inside unit-tests)
@@ -19,7 +20,10 @@ error do
 end
 
 payment :repeated? do |p|
-	path = '/tmp/test.sinatra-payment.log'
+	path = 'test.sinatra-payment.log'
+	path = File.join '/tmp', path if !Gem.win_platform?
+	FileUtils.touch path if !File.exist? path
+	
 	data = File.read path
 	id = "#{p.id}\n"
 
