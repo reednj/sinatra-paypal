@@ -118,11 +118,6 @@ class PaypalRequest
 		!custom_data.nil?
 	end
 
-	# an alias for +custom_data+
-	def data
-		custom_data
-	end
-
 	# The payment status. The most common is Completed, but you might also see
 	#
 	#  - Refunded 
@@ -203,6 +198,9 @@ class PaypalRequest
 	def fields
 		@fields
 	end
+
+	alias_method :data, :custom_data
+	alias_method :accountable?, :is_accountable?
 end
 
 # extensions needed for the paypal request to work
