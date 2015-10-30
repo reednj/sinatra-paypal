@@ -28,10 +28,10 @@ payment :repeated? do |p|
 	id = "#{p.id}\n"
 
 	if data.include? id
-		true
+		return true
 	else
 		File.append path, "#{p.id}\n"
-		false
+		return false
 	end
 end
 
