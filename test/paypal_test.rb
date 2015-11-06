@@ -110,6 +110,15 @@ class RedditStreamTest < Test::Unit::TestCase
 		assert last_response.ok?, page_error("Payment not accepted")
 	end
 
+	def test_payment_rejected_by_halt
+		data = standard_payment_data
+		data[:custom] = {:username => data[:custom], :reject => true}.to_json
+
+		post '/payment/validate', data
+		assert !last_response.ok?, page_error("Payment should have been rejected")
+		assert last_response.body.include?('requested'), page_error("Incorrect error message")
+	end
+
 	def test_payment_accepted
 		data = standard_payment_data
 		post '/payment/validate', data

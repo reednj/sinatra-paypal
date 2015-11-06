@@ -29,6 +29,10 @@ module PayPal
 				:item => item
 			}
 		end
+
+		def _call_paypal_method(key, paypal_request)
+			self.send self.class._paypal_method_name(key), paypal_request
+		end
 	end
 
 	def self.registered(app)
@@ -52,21 +56,21 @@ module PayPal
 			end
 			
 			# check transaction log to make sure this not a replay attack
-			if app._call_paypal_method(:repeated?, paypal_request)
+			if _call_paypal_method(:repeated?, paypal_request)
 				# we also want to return 200, because if it is paypal sending this, it will send 
 				# it again and again until it gets a 200 back
 				halt 200, 'already processed'
 			end
 
-			app._call_paypal_method(:validate!, paypal_request)
+			_call_paypal_method(:validate!, paypal_request)
 			
 			# check that the payment is complete. we still return 200 if not, but
 			# we don't need to do anymore processing (except for marking it as accountable, if it is)
 			if paypal_request.complete?
-				app._call_paypal_method(:complete, paypal_request)
+				_call_paypal_method(:complete, paypal_request)
 			end
 
-			app._call_paypal_method(:finish, paypal_request)
+			_call_paypal_method(:finish, paypal_request)
 
 			return 200
 		end
@@ -93,15 +97,11 @@ module PayPal
 	end
 
 	def _paypal_register_callback(key, &block)
-		self.class.send :define_method, _paypal_method_name(key), &block
+		self.send :define_method, _paypal_method_name(key), &block
 	end
 
 	def _paypal_valid_blocks
 		[:complete, :finish, :validate!, :repeated?]
-	end
-
-	def _call_paypal_method(key, paypal_request)
-		self.send _paypal_method_name(key), paypal_request
 	end
 
 	def _paypal_method_name(key)

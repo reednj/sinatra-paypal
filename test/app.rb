@@ -35,6 +35,10 @@ payment :repeated? do |p|
 	end
 end
 
+payment :complete do |p|
+	halt 500, 'rejection requested' if !p.custom_data.nil? && p.custom_data[:reject] == true
+end
+
 get '/payment/form/empty' do
 	return html_payment_form nil
 end
