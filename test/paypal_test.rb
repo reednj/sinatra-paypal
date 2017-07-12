@@ -4,7 +4,7 @@ require 'rubygems'
 require 'test/unit'
 require 'rack/test'
 
-require './app'
+require_relative './app'
 
 class RedditStreamTest < Test::Unit::TestCase
 	include Rack::Test::Methods
