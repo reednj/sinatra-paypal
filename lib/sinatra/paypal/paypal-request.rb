@@ -44,7 +44,7 @@ class PaypalRequest
 	end
 
 	def item_number
-		@fields[:item_number]
+		@fields[:item_number] || @fields[:item_number1]
 	end
 
 	def amount

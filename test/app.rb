@@ -16,3 +16,7 @@ error do
 	return "unknown error"
 end
 
+payment :complete do |p|
+	halt 500 if p.item_number.nil?
+	halt 500 if p.profit.nil?
+end
