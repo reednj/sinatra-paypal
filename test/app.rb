@@ -36,6 +36,8 @@ payment :repeated? do |p|
 end
 
 payment :complete do |p|
+	halt 500 if p.item_number.nil?
+	halt 500 if p.profit.nil?
 	halt 500, 'rejection requested' if !p.custom_data.nil? && p.custom_data[:reject] == true
 end
 

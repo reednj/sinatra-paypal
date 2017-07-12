@@ -1,9 +1,8 @@
 ENV['RACK_ENV'] = 'development'
 
 require 'rubygems'
-require 'minitest/autorun'
-require 'rack/test'
 require 'test/unit'
+require 'rack/test'
 
 require_relative './app'
 
@@ -51,7 +50,7 @@ class RedditStreamTest < Test::Unit::TestCase
 			:item_number=>"RS1",
 			:item_name=>"reddit-stream.com Unlimited Account",
 			:mc_gross=>"1.49",
-			:mc_fee=>"0.44"		
+			:mc_fee=>"0.44"
 		}
 	end
 
@@ -147,6 +146,19 @@ class RedditStreamTest < Test::Unit::TestCase
 		end
 
 		assert ex, 'callback did not raise exception'
+	end
+
+	def test_payment_accepted_alt_item_number
+		data = standard_payment_data
+		username = data[:custom]
+		
+		# change the name of item_number to item_number1 to simulate some requests
+		# we are now getting from PP
+		data[:item_number1] = data[:item_number]
+		data.delete(:item_number)
+
+		post '/payment/validate', data
+		assert last_response.ok?, page_error("Payment not accepted")
 	end
 
 end

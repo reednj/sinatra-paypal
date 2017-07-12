@@ -1,7 +1,6 @@
 ENV['RACK_ENV'] = 'development'
 
 require 'rubygems'
-require 'minitest/autorun'
 require 'rack/test'
 require 'test/unit'
 
